@@ -23,7 +23,7 @@ const Welcome = ({ navigation }) => {
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>Already have an account</Text>
-          <TouchableOpacity style={styles.footerButton}>
+          <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Login')}>
             <Text style={styles.footerButtonText}>SIGN IN</Text>
           </TouchableOpacity>
         </View>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     backgroundColor: colors.white,
     paddingVertical: 20,
-    paddingHorizontal: 40
+    paddingHorizontal: 30
   },
   title: {
     color: colors.textDark,
