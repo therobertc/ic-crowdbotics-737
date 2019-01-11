@@ -35,7 +35,6 @@ export default DrawerTemplate;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
     padding: metrics.medium
   },
   item: {
