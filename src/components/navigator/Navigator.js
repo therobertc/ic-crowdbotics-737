@@ -15,7 +15,7 @@ const navigationConfig = {
     headerRight: <HeaderRight navigation={navigation} />,
     headerTintColor: colors.white,
     headerStyle: {
-      backgroundColor: colors.black,
+      backgroundColor: colors.secondary,
     },
     headerTitleStyle: {
       fontSize: fonts.size.large,
