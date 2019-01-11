@@ -18,6 +18,9 @@
     },
     "ios": {
       "supportsTablet": true
+    },
+    "splash": {
+      "image": "./assets/images/splash.png"
     }
   }
 }
