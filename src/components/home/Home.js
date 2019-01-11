@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { increaseValue } from './HomeContainer';
 import { metrics, colors, fonts } from '../../theme/index.js';
+import * as firebase from 'firebase';
 
 
 const Home = (props) => {
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{props.value}</Text>
