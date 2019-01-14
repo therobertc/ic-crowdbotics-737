@@ -17,7 +17,7 @@ const Welcome = ({ navigation }) => {
           outstanding companies.
         </Text>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Signup')}>
           <Text style={styles.buttonText}>CREATE AN ACCOUNT</Text>
         </TouchableOpacity>
 

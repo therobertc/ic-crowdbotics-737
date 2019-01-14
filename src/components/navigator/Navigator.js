@@ -1,11 +1,12 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { metrics, colors, fonts } from '../../theme/index.js';
-import Welcome from '../welcome/Welcome.js';
-import Login from '../login/Login.js';
 import Tabs from '../tabs/Tabs.js';
 import HeaderLeft from './HeaderLeft.js';
 import HeaderRight from './HeaderRight.js';
+import Welcome from '../welcome/Welcome.js';
+import Login from '../login/Login.js';
+import Signup from '../signup/Signup.js';
 
 
 const navigationConfig = {
@@ -26,14 +27,25 @@ const navigationConfig = {
 };
 
 const Navigator = createStackNavigator({
+  Tabs: { screen: Tabs },
   Welcome: {
   screen: Welcome,
   navigationOptions: {
       header: null
     }
   },
-  Tabs: { screen: Tabs },
-  Login: { screen: Login,  },
+  Signup: {
+  screen: Signup,
+  navigationOptions: {
+      header: null
+    }
+  },
+  Login: {
+  screen: Login,
+  navigationOptions: {
+      header: null
+    }
+  },
 }, navigationConfig);
 
 export default createAppContainer(Navigator);
