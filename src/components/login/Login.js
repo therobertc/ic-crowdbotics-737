@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, ActivityIndicator, TouchableOpacity, TextInput } from 'react-native';
 import { metrics, colors, fonts } from '../../theme/index.js';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateLoadingAction } from '../welcome/WelcomeContainer.js';
 import PropTypes from 'prop-types';
+import * as firebase from 'firebase';
 
 
 class Login extends Component {
@@ -9,6 +13,15 @@ class Login extends Component {
   state = {
     email: '',
     password: ''
+  }
+
+  loginUser = () => {
+    this.props.updateLoadingAction(true);
+    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    .catch(error => {
+      alert('Username or password incorrect.');
+      this.props.updateLoadingAction(false);
+    });
   }
 
   render(){
@@ -42,7 +55,7 @@ class Login extends Component {
           <Text style={styles.forgotPasswordText}>Forgot password?</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity style={styles.button} onPress={this.loginUser}>
           <Text style={styles.buttonText}>ENTER</Text>
         </TouchableOpacity>
 
@@ -58,12 +71,27 @@ class Login extends Component {
           <Text style={styles.footerButtonText}>SIGNUP</Text>
         </TouchableOpacity>
 
+        {
+          this.props.isLoading &&
+            <View style={styles.activityIndicatorContainer}>
+              <ActivityIndicator size="small" color={colors.grey} />
+            </View>
+        }
+
       </View>
     );
   }
 }
 
-export default Login;
+const stateToProps = state => ({
+  isLoading: state.welcomeReducer.isLoading,
+});
+
+const dispatchToProps = dispatch => ({
+  updateLoadingAction: bindActionCreators(updateLoadingAction, dispatch),
+});
+
+export default connect(stateToProps, dispatchToProps)(Login);
 
 const styles = StyleSheet.create({
   container: {
@@ -118,5 +146,13 @@ const styles = StyleSheet.create({
   footerButtonText: {
     marginLeft: metrics.small,
     color: colors.primary
+  },
+  activityIndicatorContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    backgroundColor: colors.white
   }
 });
