@@ -1,7 +1,4 @@
-import * as firebase from 'firebase';
-
-// Initialize Firebase
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: 'AIzaSyDTEm1-9dt5hBFBhg7-_2I-ZFNrqiVWxqU',
   authDomain: 'emmaapi.firebaseapp.com',
   databaseURL: 'https://emmaapi.firebaseio.com',
@@ -9,5 +6,3 @@ const firebaseConfig = {
   storageBucket: 'emmaapi.appspot.com',
   messagingSenderId: '1075847453292'
 };
-
-firebase.initializeApp(firebaseConfig);

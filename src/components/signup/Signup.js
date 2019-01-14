@@ -1,23 +1,40 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity, TextInput, Dimensions } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { saveCurrentUserAction,  } from '../profile/ProfileContainer.js';
+import { saveEmailAction, savePhoneNumberAction  } from '../signup/SignupContainer.js';
+import { updateLoadingAction } from '../welcome/WelcomeContainer.js';
 import { metrics, colors, fonts } from '../../theme/index.js';
 import { Ionicons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
+import * as firebase from 'firebase';
 
 
 class Signup extends Component {
 
   state = {
-    email: '',
-    phoneNumber: '',
     password: '',
-    termsAccepted: false
+    termsAccepted: false,
   }
 
-  acceptTerms = () => this.setState({ termsAccepted: !this.state.termsAccepted })
+  registerUser = (email, password) => {
+    if (this.state.termsAccepted) {
+      this.props.updateLoadingAction(true);
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .catch(error => {
+          this.props.updateLoadingAction(false);
+          alert(error.message);
+        });
+    } else {
+      alert('Please accept terms and conditions.');
+    }
+  }
+
+  acceptTerms = (bool) => this.setState({ termsAccepted: bool })
 
   render(){
-    const { navigation } = this.props;
+    const { navigation, currentUser } = this.props;
 
     return (
       <View style={styles.container}>
@@ -27,7 +44,7 @@ class Signup extends Component {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            onChangeText={(text) => this.setState({ email: text })}
+            onChangeText={(text) => this.props.saveEmailAction(text)}
             value={this.state.text}
             placeholder="Email address"
           />
@@ -36,7 +53,7 @@ class Signup extends Component {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            onChangeText={(text) => this.setState({ phoneNumber: text })}
+            onChangeText={text => this.props.savePhoneNumberAction(text)}
             value={this.state.text}
             placeholder="Phone number"
             keyboardType="phone-pad"
@@ -55,9 +72,9 @@ class Signup extends Component {
 
         <View style={styles.termsContainer}>
           {
-            this.state.termsAccepted
-            ? <TouchableOpacity style={styles.checkbox} onPress={this.acceptTerms}/>
-            : <TouchableOpacity style={styles.checkboxAccepted} onPress={this.acceptTerms}>
+            !this.state.termsAccepted
+            ? <TouchableOpacity style={styles.checkbox} onPress={() => this.acceptTerms(true)}/>
+            : <TouchableOpacity style={styles.checkboxAccepted} onPress={() => this.acceptTerms(false)}>
                 <Ionicons name="md-checkmark-circle" size={24} color={colors.primary} />
               </TouchableOpacity>
           }
@@ -69,7 +86,10 @@ class Signup extends Component {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.registerUser(this.props.email, this.state.password)}
+        >
           <Text style={styles.buttonText}>ENTER</Text>
         </TouchableOpacity>
 
@@ -79,12 +99,33 @@ class Signup extends Component {
           <Text style={styles.footerButtonText}>LOGIN</Text>
         </TouchableOpacity>
 
+        {
+          this.props.isLoading &&
+            <View style={styles.activityIndicatorContainer}>
+              <ActivityIndicator size="small" color={colors.grey} />
+            </View>
+        }
+
       </View>
     );
   }
 }
 
-export default Signup;
+const stateToProps = state => ({
+  currentUser: state.profileReducer.currentUser,
+  isLoading: state.welcomeReducer.isLoading,
+  email: state.signupReducer.email,
+});
+
+const dispatchToProps = dispatch => ({
+  saveCurrentUserAction: bindActionCreators(saveCurrentUserAction, dispatch),
+  saveEmailAction: bindActionCreators(saveEmailAction, dispatch),
+  savePhoneNumberAction: bindActionCreators(savePhoneNumberAction, dispatch),
+  updateLoadingAction: bindActionCreators(updateLoadingAction, dispatch),
+});
+
+export default connect(stateToProps, dispatchToProps)(Signup);
+
 
 const styles = StyleSheet.create({
   container: {
@@ -153,5 +194,13 @@ const styles = StyleSheet.create({
   footerButtonText: {
     marginLeft: metrics.small,
     color: colors.primary
+  },
+  activityIndicatorContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    backgroundColor: colors.white
   }
 });

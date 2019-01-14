@@ -3,6 +3,8 @@ import { View, Image } from 'react-native';
 import { Provider } from 'react-redux';
 import { Asset, SplashScreen } from 'expo';
 import store from './src/store/store.js';
+import * as firebase from 'firebase';
+import { firebaseConfig } from './config/firebase.js';
 import Drawer from './src/components/drawer/Drawer.js';
 
 class App extends Component {
@@ -13,6 +15,7 @@ class App extends Component {
 
   componentDidMount() {
     SplashScreen.preventAutoHide();
+    firebase.initializeApp(firebaseConfig);
   }
 
   cacheSplashResourcesAsync = async () => {
