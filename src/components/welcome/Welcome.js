@@ -68,7 +68,7 @@ class Welcome extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.topContainer}>
-          <Image/>
+          <Image source={require('../../../assets/images/logo.png')} style={styles.logoImage}/>
         </View>
         <View style={styles.bottomContainer}>
           <Text style={styles.title}>We are happy to help you</Text>
@@ -119,11 +119,18 @@ export default connect(stateToProps, dispatchToProps)(Welcome);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: colors.secondary
   },
   topContainer: {
     flex: 1,
-    backgroundColor: colors.secondary
+    backgroundColor: colors.secondary,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  logoImage: {
+    width: 100,
+    resizeMode: 'contain'
   },
   bottomContainer: {
     flex: 1,
@@ -131,7 +138,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     backgroundColor: colors.white,
     paddingVertical: 20,
-    paddingHorizontal: 30
+    paddingHorizontal: 30,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6
   },
   title: {
     color: colors.textDark,

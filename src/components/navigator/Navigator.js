@@ -4,13 +4,14 @@ import { metrics, colors, fonts } from '../../theme/index.js';
 import Tabs from '../tabs/Tabs.js';
 import HeaderLeft from './HeaderLeft.js';
 import HeaderRight from './HeaderRight.js';
+import Introduce from '../introduce/Introduce.js';
 import Welcome from '../welcome/Welcome.js';
 import Login from '../login/Login.js';
 import Signup from '../signup/Signup.js';
 
 
 const navigationConfig = {
-  initialRouteName: 'Welcome',
+  initialRouteName: 'Introduce',
   headerMode: 'float',
   defaultNavigationOptions: ({ navigation }) => ({
     headerLeft: <HeaderLeft navigation={navigation} />,
@@ -28,21 +29,27 @@ const navigationConfig = {
 
 const Navigator = createStackNavigator({
   Tabs: { screen: Tabs },
+  Introduce: {
+    screen: Introduce,
+    navigationOptions: {
+      header: null
+    }
+  },
   Welcome: {
-  screen: Welcome,
-  navigationOptions: {
+    screen: Welcome,
+    navigationOptions: {
       header: null
     }
   },
   Signup: {
-  screen: Signup,
-  navigationOptions: {
+    screen: Signup,
+    navigationOptions: {
       header: null
     }
   },
   Login: {
-  screen: Login,
-  navigationOptions: {
+    screen: Login,
+    navigationOptions: {
       header: null
     }
   },

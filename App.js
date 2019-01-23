@@ -28,6 +28,8 @@ class App extends Component {
     const images = [
       require('./assets/images/app.png'),
       require('./assets/images/loading.png'),
+      require('./assets/images/intro_phone.png'),
+      require('./assets/images/logo.png'),
     ];
 
     const cacheImages = images.map((image) => {
