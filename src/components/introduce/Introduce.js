@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { saveCurrentUserAction,  } from '../profile/ProfileContainer.js';
-import { updateLoadingAction } from '../welcome/WelcomeContainer.js';
-import { layouts, colors, fonts } from '../../theme/index.js';
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  Image, 
+  TouchableOpacity,
+  ImageBackground
+} from 'react-native';
+import { layouts, colors, images } from '../../theme/index.js';
 
 const items = [0, 1, 2, 3, 4];
 
-class Introduce extends Component {
+export default class Introduce extends Component {
   constructor (props) {
     super(props);
 
@@ -20,8 +23,8 @@ class Introduce extends Component {
   render(){
     const { navigation } = this.props;
     return (
-      <View style={styles.container}>
-        <Image source={require('../../../assets/images/intro_phone.png')} style={styles.phoneContainer}/>
+      <ImageBackground source={images.background} style={styles.container}>
+        <Image source={images.intro_phone} style={styles.phoneContainer}/>
 
         <View style={styles.bodyContainer}>
           <Text style={styles.title}>Welcome to the future of Investing</Text>
@@ -43,29 +46,16 @@ class Introduce extends Component {
             <Text style={styles.footerButtonText}>skip</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 }
 
-const stateToProps = state => ({
-  currentUser: state.profileReducer.currentUser,
-  phoneNumber: state.signupReducer.phoneNumber,
-  isLoading: state.welcomeReducer.isLoading,
-});
-
-const dispatchToProps = dispatch => ({
-  saveCurrentUserAction: bindActionCreators(saveCurrentUserAction, dispatch),
-  updateLoadingAction: bindActionCreators(updateLoadingAction, dispatch),
-});
-
-export default connect(stateToProps, dispatchToProps)(Introduce);
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#90DBD7',
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -110,14 +100,14 @@ const styles = StyleSheet.create({
   selectDotStyle: {
     width: 32,
     height: 4,
-    backgroundColor: '#52CBC2',
+    backgroundColor: colors.activeDot,
     borderRadius: 2,
     marginLeft: 4
   },
   dotStyle: {
     width: 32,
     height: 4,
-    backgroundColor: '#ECF1F8',
+    backgroundColor: colors.dot,
     borderRadius: 2,
     marginLeft: 4
   }
