@@ -23,9 +23,10 @@ class SignupChatbot extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      is_buttons: false,
-      type: 'input',
-      intent_name: ''
+      has_buttons: false,
+      intent_name: '',
+      keyboardType: 'default',
+      is_encrypt: false
     }
 
     this._renderBubble = this._renderBubble.bind(this);
@@ -69,7 +70,9 @@ class SignupChatbot extends Component {
     this.setState((previousState) => {
       return {
         messages: GiftedChat.append(previousState.messages, message),
-        intent_name: intent_name
+        intent_name: intent_name,
+        has_buttons: payload.data.type == 'button',
+        is_encrypt: intent_name.toLowerCase().includes('email')
       };
     });
   }
@@ -115,18 +118,6 @@ class SignupChatbot extends Component {
   }
 
   _send = (msg = []) => {
-    if (this.state.intent_name.toLowerCase().includes('name') && _validateEmail(msg[0].text) == false) {
-      Alert.alert(
-        'Notice',
-        'Please enter the valid email address',
-        [
-            {text: 'OK', onPress: () => console.log('Got it.')}
-        ],
-        {cancelable: true}
-      );
-      return
-    }
-
     if (msg[0].text.trim() == '' || msg[0].text == undefined) {
       Alert.alert(
         'Notice',
@@ -139,11 +130,25 @@ class SignupChatbot extends Component {
       return
     }
 
-    this.setState((previousState) => {
-      return {
-        messages: GiftedChat.append(previousState.messages, msg)
-      };
-    });
+    if (this.state.intent_name.toLowerCase().includes('name') && _validateEmail(msg[0].text) == false) {
+      Alert.alert(
+        'Notice',
+        'Please enter the valid email address',
+        [
+            {text: 'OK', onPress: () => console.log('Got it.')}
+        ],
+        {cancelable: true}
+      );
+      return
+    }
+
+    if(!this.state.intent_name.toLowerCase().includes('email')) {
+      this.setState((previousState) => {
+        return {
+          messages: GiftedChat.append(previousState.messages, msg)
+        };
+      });
+    }
 
     this._fetchResponse(msg[0].text)
   }
@@ -198,7 +203,7 @@ class SignupChatbot extends Component {
 
   _renderSend = (props) => {
     return (
-      <Send {...props} dis containerStyle={styles.sendButtonContainer}>
+      <Send {...props} disabled={this.state.has_buttons} containerStyle={styles.sendButtonContainer}>
         <Icon.Ionicons
           name={'md-send'}
           color={colors.send}
@@ -210,7 +215,6 @@ class SignupChatbot extends Component {
 
   render(){
     const { navigation } = this.props;
-
     return (
       <View style={styles.container}>
         <View style={styles.headerContainer}>
@@ -223,6 +227,12 @@ class SignupChatbot extends Component {
             _id: 1
           }}
           alwaysShowSend={true}
+          textInputProps={{
+            editable: !this.state.has_buttons,
+            keyboardType: this.state.keyboardType,
+            secureTextEntry: this.state.is_encrypt,
+            multiline: false
+          }}
           onSend={this._send}
           renderAvatar={null}
           renderBubble={this._renderBubble}
