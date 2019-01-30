@@ -1,49 +1,87 @@
 import React from 'react';
+import { Image } from 'react-native';
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
-import { colors, fonts } from '../../theme/index.js';
+import { colors, fonts, icons, metrics } from '../../theme/index.js';
 import { Ionicons } from '@expo/vector-icons';
 import Home from '../home/Home.js';
 import About from '../about/About.js';
+import Chat from '../chat/Chat.js';
 
 const navigationConfig = {
   initialRoute: 'About',
   showIcon: true,
   tabBarOptions: {
-    inactiveTintColor: colors.secondary,
-    activeTintColor: colors.primary,
+    inactiveTintColor: colors.tabIcon,
+    activeTintColor: 'red',
     inactiveBackgroundColor: colors.background,
     activeBackgroundColor: colors.background,
-    showLabel: true,
+    showLabel: false,
     showIcon: true,
+    style: {
+      borderTopColor: colors.greyMedium,
+      height: 55,
+    },
     labelStyle: {
       fontSize: fonts.size.small,
     },
     tabStyle: {
-      backgroundColor: colors.greyLight
+      // backgroundColor: colors.tabBackground
     },
   },
   swipeEnabled: true
 };
 
 const Tabs = createBottomTabNavigator({
-  Home: {
+  // TODO
+  Feed: {
     screen: Home,
     navigationOptions: {
-      title: 'Home',
-      tabBarLabel: 'Home',
-      tabBarIcon: ({ tintColor, activeTintColor }) =>
-        <Ionicons name="md-home" size={24} color={tintColor} />
+      title: 'Feed',
+      // tabBarLabel: 'Feed',
+      tabBarIcon: ({ inactiveTintColor, activeTintColor }) =>
+        <Image source={icons.feed} style={{ width: 22, height: 19 }}/>
     }
   },
-  About: {
+  // TODO
+  Portfolio: {
     screen: About,
     navigationOptions: {
-      title: 'About',
-      tabBarLabel: 'About',
+      title: 'Portfolio',
+      tabBarLabel: 'Portfolio',
       tabBarIcon: ({ tintColor, activeTintColor }) =>
-        <Ionicons name="ios-information-circle" size={24} color={tintColor} />
+        <Image source={icons.portfolio} style={{ width: 22, height: 22 }}/>
+    }
+  },
+  Chat: {
+    screen: Chat,
+    navigationOptions: {
+      title: 'Chat',
+      tabBarLabel: 'Chat',
+      tabBarIcon: ({ tintColor, activeTintColor }) =>
+        <Image source={icons.chat} style={{ position: 'absolute', width: 70, height: 70, top: -15 }}/>
+    }
+  },
+  // TODO
+  Profile: {
+    screen: Chat,
+    navigationOptions: {
+      title: 'Profile',
+      tabBarLabel: 'Profile',
+      tabBarIcon: ({ tintColor, activeTintColor }) =>
+        <Image source={icons.profile} style={{ width: 18, height: 22 }}/>
+    }
+  },
+  // TODO
+  More: {
+    screen: Chat,
+    navigationOptions: {
+      title: 'More',
+      tabBarLabel: 'More',
+      tabBarIcon: ({ tintColor, activeTintColor }) =>
+        <Image source={icons.more} style={{ width: 27, height: 6 }}/>
     }
   }
 }, navigationConfig);
+
 
 export default Tabs;

@@ -11,7 +11,7 @@ import Signup from '../signup/Signup.js';
 
 
 const navigationConfig = {
-  initialRouteName: 'Introduce',
+  initialRouteName: 'Tabs',
   headerMode: 'float',
   defaultNavigationOptions: ({ navigation }) => ({
     headerLeft: <HeaderLeft navigation={navigation} />,

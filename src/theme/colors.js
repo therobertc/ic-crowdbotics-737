@@ -16,6 +16,9 @@ const colors = {
   // black/white
   black: '#000000',
   white: '#ffffff',
+
+  tabBackground: 'rgb(255, 255, 255)',
+  tabIcon: 'rgb(219, 222, 223)',
 };
 
 export default colors;
