@@ -34,8 +34,7 @@ export default class Welcome extends Component {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Already have an account</Text>
-            <TouchableOpacity style={styles.footerButton}>
-            {/* <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Login')}> */}
+            <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('LoginBot')}>
               <Text style={styles.footerButtonText}>SIGN IN</Text>
             </TouchableOpacity>
           </View>

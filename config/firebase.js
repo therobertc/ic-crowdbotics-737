@@ -1,5 +1,6 @@
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import { _showAlert } from './util';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyDTEm1-9dt5hBFBhg7-_2I-ZFNrqiVWxqU',
@@ -24,7 +25,29 @@ export const _signupAPI = (userInfo) => {
       var user = firebase.auth().currentUser;
       this._saveUserInfo(user.uid, userInfo);
       user.sendEmailVerification();
-      return res.json();
+      _showAlert('You account was created successfully.');
   })
-  .catch((err) => err.message)
+  .catch((err) => _showAlert(err.message))
+}
+
+export const _loginAPI = (email, password) => {
+  firebase.auth().signInWithEmailAndPassword(email, password)
+  .then((res) => {
+    var user = firebase.auth().currentUser;
+    if (!user.emailVerified) {
+      _showAlert('You need to verify your email address first to login');
+    } else {
+      _showAlert('You logged in successfully.')
+    }
+  })
+  .catch(_showAlert(err.message))
+}
+
+export const _sendResetPasswordEmail = (email) => {
+  firebase.auth().sendPasswordResetEmail(email)
+  .then((res) => {
+    _showAlert('Reset password email was sent to ' + email + ' successfully.')
+  }).catch((err) => {
+    _showAlert(err.message)
+  })
 }

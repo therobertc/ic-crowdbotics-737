@@ -13,12 +13,11 @@ import { GiftedChat, Time, Bubble, InputToolbar, Send } from 'react-native-gifte
 import { saveEmailAction, savePhoneNumberAction  } from '../../reducer/signup.js';
 import { fetchResponseFromDialogflow } from '../../../config/api.js';
 import { _validateEmail, _showAlert } from '../../../config/util.js';
-import { _signupAPI } from '../../../config/firebase.js';
+import { _loginAPI, _sendResetPasswordEmail } from '../../../config/firebase.js';
 import { metrics, colors, fonts } from '../../theme/index.js';
 
 
-
-class SignupChatbot extends Component {
+class LoginChatbot extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,21 +33,17 @@ class SignupChatbot extends Component {
   } 
 
   componentDidMount() {
-    this._fetchResponse('hi')
+    this._fetchResponse('I already have an account')
   }
 
   _processResponse = (res) => {
     const payload = res.result.fulfillment.messages[0].payload;
     const intent_name = res.result.metadata.intentName;
 
-    if (intent_name.toLowerCase().includes('signuppassword')) {
-      const user_info = {
-        name: this.state.name.trim() || '',
-        email: this.state.email.trim().toLowerCase() || '',
-        password: this.state.password
-      }
-
-      _signupAPI(user_info);
+    if (intent_name.toLowerCase().includes('loginpassword')) {
+      _loginAPI(this.state.email.trim().toLowerCase(), this.state.password);
+    } else if (intent_name.toLowerCase().includes('forgotpassword')) {
+      _sendResetPasswordEmail(this.state.email.trim().toLowerCase())
     }
 
     const message = {
@@ -74,20 +69,16 @@ class SignupChatbot extends Component {
   _storeInfo = (msg) => {
     const { intent_name } = this.state;
     const intentName = intent_name.toLowerCase();
-    if (intentName == 'signupintent') {
-      this.setState({
-        name: msg
-      })
-    } else if (intentName.includes('signupname')) {
+    if (intentName == 'loginintent') {
       this.setState({
         email: msg
       })
-      msg = 'Signup Email is ' + msg;
-    } else if (intentName.includes('signupemail')) {
+      msg = 'Login Email is ' + msg;
+    } else if (intentName.includes('loginemail') && !msg.includes('Forgot password?')) {
       this.setState({
         password: msg
       })
-      msg = 'Signup Password is ' + msg;
+      msg = 'Login Password is ' + msg;
     }
     
     return msg
@@ -113,22 +104,18 @@ class SignupChatbot extends Component {
   }
 
   _send = (msg = []) => {
-    if (msg[0].text.trim() == 'I already have an account') {
-      this.props.navigation.navigate('LoginBot');
-      return;
-    }
-
     if (msg[0].text.trim() == '' || msg[0].text == undefined) {
       _showAlert('You can\'t put the empty string as answer');
       return
     }
 
-    if (this.state.intent_name.toLowerCase().includes('signupname') && _validateEmail(msg[0].text) == false) {
+    if (this.state.intent_name.toLowerCase() == 'loginintent' && _validateEmail(msg[0].text) == false) {
       _showAlert('Please enter the valid email address');
       return
     }
 
-    if(!this.state.intent_name.toLowerCase().includes('signupemail')) {
+    if(!this.state.intent_name.toLowerCase().includes('loginemail') || 
+    (this.state.intent_name.toLowerCase().includes('loginemail') && msg[0].text.trim().includes('Forgot password'))) {
       this.setState((previousState) => {
         return {
           messages: GiftedChat.append(previousState.messages, msg)
@@ -165,7 +152,7 @@ class SignupChatbot extends Component {
         </View>
 
         {
-          currentMessage.data.type == 'button' && <View style={{alignItems: 'center', marginBottom: 30, marginTop: 10}}>
+          (currentMessage.data.buttons && currentMessage.data.buttons.length > 0) && <View style={{alignItems: 'center', marginBottom: 30, marginTop: 10}}>
             {
               currentMessage.data.buttons.map((buttonText, index) => {
                 return (
@@ -200,7 +187,6 @@ class SignupChatbot extends Component {
   }
 
   render(){
-    const { navigation } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.headerContainer}>
@@ -239,7 +225,7 @@ const dispatchToProps = dispatch => ({
   savePhoneNumberAction: bindActionCreators(savePhoneNumberAction, dispatch),
 });
 
-export default connect(stateToProps, dispatchToProps)(SignupChatbot);
+export default connect(stateToProps, dispatchToProps)(LoginChatbot);
 
 
 const styles = StyleSheet.create({

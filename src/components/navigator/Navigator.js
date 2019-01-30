@@ -8,6 +8,7 @@ import Welcome from '../welcome/Welcome.js';
 import Login from '../login/Login.js';
 import Signup from '../signup/Signup.js';
 import SignupChatbot from '../signup/Chatbot.js';
+import LoginChatbot from '../login/Chatbot.js';
 
 const navigationConfig = {
   initialRouteName: 'Introduce',
@@ -57,6 +58,12 @@ const AppNavigator = createStackNavigator({
       header: null
     }
   },
+  LoginBot: {
+    screen: LoginChatbot,
+    navigationOptions: {
+      header: null
+    }
+  }
 }, navigationConfig);
 
 export default createAppContainer(AppNavigator);
