@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { Platform, StatusBar, View } from 'react-native';
 import { Provider } from 'react-redux';
-import { Asset, SplashScreen } from 'expo';
-import store from './src/store/store.js';
+import { AppLoading, Asset, Font, Icon } from 'expo';
+
 import * as firebase from 'firebase';
 import { firebaseConfig } from './config/firebase.js';
-import Drawer from './src/components/drawer/Drawer.js';
+
+import store from './src/store/store.js';
+import AppNavigator from './src/components/navigator/Navigator.js';
 
 class App extends Component {
 
@@ -14,48 +16,58 @@ class App extends Component {
   };
 
   componentDidMount() {
-    SplashScreen.preventAutoHide();
     firebase.initializeApp(firebaseConfig);
   }
 
-  cacheSplashResourcesAsync = async () => {
-    const img = require('./assets/images/splash.png');
-    return Asset.fromModule(img).downloadAsync();
-  }
+  _loadResourcesAsync = async () => {
+    return Promise.all([
+      Asset.loadAsync([
+        require('./assets/images/app.png'),
+        require('./assets/images/loading.png'),
+        require('./assets/images/intro_phone.png'),
+        require('./assets/images/logo.png'),
+        require('./assets/images/background.png')
+      ]),
+      Font.loadAsync({
+        ...Icon.Ionicons.font,
 
-  cacheResourcesAsync = async () => {
-    SplashScreen.hide();
-    const images = [
-      require('./assets/images/app.png'),
-      require('./assets/images/loading.png'),
-      require('./assets/images/intro_phone.png'),
-      require('./assets/images/logo.png'),
-    ];
+        'avenir-black': require('./assets/fonts/AvenirLTStd-Black.otf'),
+        'avenir-book': require('./assets/fonts/AvenirLTStd-Book.otf'),
+        'avenir-roman': require('./assets/fonts/AvenirLTStd-Roman.otf'),
+      }),
+    ]);
+  };
 
-    const cacheImages = images.map((image) => {
-      return Asset.fromModule(image).downloadAsync();
-    });
+  _handleLoadingError = error => {
+    // In this case, you might want to report the error to your error
+    // reporting service, for example Sentry
+    console.warn(error);
+  };
 
-    await Promise.all(cacheImages);
+  _handleFinishLoading = async () => {
     this.setState({ isReady: true });
-  }
+  };
 
   render(){
     if (!this.state.isReady) {
       return (
-        <View style={{ flex: 1 }}>
-          <Image
-            source={require('./assets/images/splash.png')}
-            onLoad={this.cacheResourcesAsync}
-          />
-        </View>
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
+        />
       );
     }
 
     return (
-      <Provider store={store}>
-        <Drawer />
-      </Provider>
+      <View style={{flex: 1}}>
+        {
+          Platform.OS === 'ios' && <StatusBar barStyle="default" />
+        }
+        <Provider store={store}>
+          <AppNavigator />
+        </Provider>
+      </View>
     );
   }
 }

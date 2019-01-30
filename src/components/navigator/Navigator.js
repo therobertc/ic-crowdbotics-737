@@ -1,14 +1,14 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import { metrics, colors, fonts } from '../../theme/index.js';
-import Tabs from '../tabs/Tabs.js';
+import { colors, fonts } from '../../theme/index.js';
 import HeaderLeft from './HeaderLeft.js';
 import HeaderRight from './HeaderRight.js';
 import Introduce from '../introduce/Introduce.js';
 import Welcome from '../welcome/Welcome.js';
 import Login from '../login/Login.js';
 import Signup from '../signup/Signup.js';
-
+import SignupChatbot from '../signup/Chatbot.js';
+import LoginChatbot from '../login/Chatbot.js';
 
 const navigationConfig = {
   initialRouteName: 'Introduce',
@@ -27,8 +27,7 @@ const navigationConfig = {
   }),
 };
 
-const Navigator = createStackNavigator({
-  Tabs: { screen: Tabs },
+const AppNavigator = createStackNavigator({
   Introduce: {
     screen: Introduce,
     navigationOptions: {
@@ -37,6 +36,12 @@ const Navigator = createStackNavigator({
   },
   Welcome: {
     screen: Welcome,
+    navigationOptions: {
+      header: null
+    }
+  },
+  SignupBot: {
+    screen: SignupChatbot,
     navigationOptions: {
       header: null
     }
@@ -53,6 +58,12 @@ const Navigator = createStackNavigator({
       header: null
     }
   },
+  LoginBot: {
+    screen: LoginChatbot,
+    navigationOptions: {
+      header: null
+    }
+  }
 }, navigationConfig);
 
-export default createAppContainer(Navigator);
+export default createAppContainer(AppNavigator);
