@@ -42,6 +42,7 @@ class LoginChatbot extends Component {
 
     if (intent_name.toLowerCase().includes('loginpassword')) {
       _loginAPI(this.state.email.trim().toLowerCase(), this.state.password);
+      this.props.navigation.navigate('Tabs')
     } else if (intent_name.toLowerCase().includes('forgotpassword')) {
       _sendResetPasswordEmail(this.state.email.trim().toLowerCase())
     }

@@ -13,9 +13,8 @@ import { GiftedChat, Time, Bubble, InputToolbar, Send } from 'react-native-gifte
 import { saveEmailAction, savePhoneNumberAction  } from '../../reducer/signup.js';
 import { fetchResponseFromDialogflow } from '../../../config/api.js';
 import { _validateEmail, _showAlert } from '../../../config/util.js';
-import { _signupAPI } from '../../../config/firebase.js';
+import { _signupAPI, _updateUserInfoAPI } from '../../../config/firebase.js';
 import { metrics, colors, fonts } from '../../theme/index.js';
-
 
 
 class SignupChatbot extends Component {
@@ -41,16 +40,6 @@ class SignupChatbot extends Component {
     const payload = res.result.fulfillment.messages[0].payload;
     const intent_name = res.result.metadata.intentName;
 
-    if (intent_name.toLowerCase().includes('signuppassword')) {
-      const user_info = {
-        name: this.state.name.trim() || '',
-        email: this.state.email.trim().toLowerCase() || '',
-        password: this.state.password
-      };
-
-      _signupAPI(user_info);
-    }
-
     const message = {
       _id: Math.random() * 1000000,
       text: payload.messages.join('\n\n'),
@@ -74,6 +63,7 @@ class SignupChatbot extends Component {
   _storeInfo = (msg) => {
     const { intent_name } = this.state;
     const intentName = intent_name.toLowerCase();
+
     if (intentName == 'signupintent') {
       this.setState({
         name: msg
@@ -88,6 +78,27 @@ class SignupChatbot extends Component {
         password: msg
       });
       msg = 'Signup Password is ' + msg;
+    } else if (intentName.includes('signupfurther')) {
+      this.setState({
+        zipcode: msg
+      })
+    } else if (intentName.includes('signupzipcode')) {
+      this.setState({
+        status: msg
+      })
+    } else if (intentName.includes('signupstatus')) {
+      this.setState({
+        job: msg
+      })
+      msg = 'My job is ' + msg;
+    } else if (intentName.includes('signupjob')) {
+      this.setState({
+        salary: msg
+      })
+    } else if (intentName.includes('signupsalary')) {
+      this.setState({
+        net: msg
+      })
     }
 
     return msg;
@@ -95,6 +106,40 @@ class SignupChatbot extends Component {
 
   _fetchResponse = (msg) => {
     msg = this._storeInfo(msg);
+
+    const intentName = this.state.intent_name.toLowerCase();
+
+    if (intentName.includes('signuppassword')) {
+      const user_info = {
+        name: this.state.name.trim() || '',
+        email: this.state.email.trim().toLowerCase() || '',
+        password: this.state.password
+      }
+
+      _signupAPI(user_info)
+      .then((res) => {
+          console.log(res);
+      }).catch((err) => {
+          _showAlert(err);
+          return;
+      })
+    } else if (intentName.includes('signupnet')) {
+      const user_info = {
+        zipcode: this.state.zipcode,
+        status: this.state.status,
+        job: this.state.job,
+        salary: this.state.salary,
+        net: this.state.net
+      }
+
+      _updateUserInfoAPI(user_info)
+      .then((res) => {
+          console.log(res);
+      }).catch((err) => {
+          _showAlert(err);
+          return;
+      })
+    }
 
     fetchResponseFromDialogflow(msg)
     .then((res) => {
@@ -114,6 +159,16 @@ class SignupChatbot extends Component {
 
   _send = (msg = []) => {
     if (msg[0].text.trim() == 'I already have an account') {
+      this.props.navigation.navigate('LoginBot');
+      return;
+    }
+
+    if (msg[0].text.trim() == 'Skip for now') {
+      this.props.navigation.navigate('LoginBot');
+      return;
+    }
+
+    if (msg[0].text.trim().includes('Yes, log me in')) {
       this.props.navigation.navigate('LoginBot');
       return;
     }
@@ -155,6 +210,7 @@ class SignupChatbot extends Component {
 
   _renderBubble = (props) => {
     const { currentMessage } = props;
+    const intentName = this.state.intent_name.toLowerCase();
     if (currentMessage.user._id != 2)
       {return <Bubble {...props}/>;}
     return (
@@ -165,7 +221,14 @@ class SignupChatbot extends Component {
         </View>
 
         {
-          currentMessage.data.type == 'button' && <View style={{alignItems: 'center', marginBottom: 30, marginTop: 10}}>
+          currentMessage.data.type == 'button' && <View style={{
+            flex: 1,
+            alignItems: 'center', 
+            marginBottom: 30, 
+            marginTop: 10,
+            flexWrap: 'wrap',
+            flexDirection: (intentName.includes('welcome') || intentName.includes('signuppassword') || intentName.includes('signupsalary')) ? 'column' : 'row',
+          }}>
             {
               currentMessage.data.buttons.map((buttonText, index) => {
                 return (
@@ -274,10 +337,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start'
   },
   buttonContainer: {
-    height: 45,
+    height: 40,
     marginTop: 10,
-    paddingRight: 20,
-    paddingLeft: 20,
+    marginLeft: 10,
+    paddingRight: 10,
+    paddingLeft: 10,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 6,
