@@ -3,7 +3,7 @@ const metrics = {
   tiny: 1.8,
   small: 5,
   medium: 10,
-  large: 15,
+  large: 17,
   huge: 20,
   // Borders
   tinyBorder: 0.3,

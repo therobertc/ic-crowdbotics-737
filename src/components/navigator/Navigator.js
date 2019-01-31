@@ -13,7 +13,7 @@ import Tabs from '../tabs/Tabs.js';
 
 
 const navigationConfig = {
-  initialRouteName: 'Introduce',
+  initialRouteName: 'Tabs',
   headerMode: 'float',
   defaultNavigationOptions: ({ navigation }) => ({
     headerLeft: <HeaderLeft navigation={navigation} />,

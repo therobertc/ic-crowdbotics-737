@@ -10,31 +10,32 @@ import moment from 'moment-timezone';
 
 
 const RenderBubble = props => {
-  console.log(props);
   return (
-    <View>
+    <View style={styles.container}>
       <Bubble
         {...props}
         textStyle={{
           right: {
             color: colors.white,
-            fontSize: fonts.size.small,
-            // fontFamily: 'openSansSemiBold',
+            fontSize: fonts.size.medium,
+            fontFamily: 'avenir-roman',
           },
           left: {
             color: colors.textDark,
-            fontSize: fonts.size.small,
-            // fontFamily: 'openSansSemiBold',
+            fontSize: fonts.size.medium,
+            fontFamily: 'avenir-roman',
           }
         }}
         wrapperStyle={{
           left: {
             backgroundColor: colors.greyMedium,
-            marginBottom: metrics.small
+            margin: metrics.medium,
+            borderRadius: 5,
           },
           right: {
             backgroundColor: colors.secondary,
-            marginBottom: metrics.small
+            margin: metrics.medium,
+            borderRadius: 5,
           }
         }}
         touchableProps={{
@@ -44,9 +45,7 @@ const RenderBubble = props => {
           },
         }}
       />
-      <Text
-        style={props.currentMessage.user._id === 1 ? styles.dateRight : styles.dateLeft}
-      >
+      <Text style={props.currentMessage.user._id === 1 ? styles.dateRight : styles.dateLeft}>
         {moment(props.currentMessage.dateCreated).format('hh:mm A')}
       </Text>
     </View>
@@ -57,16 +56,18 @@ export default RenderBubble;
 
 const styles = StyleSheet.create({
   dateLeft: {
+    fontFamily: 'avenir-roman',
     color: colors.textMedium,
     fontSize: fonts.size.tiny,
-    marginHorizontal: 6,
+    marginHorizontal: metrics.medium,
     marginBottom: 3
   },
   dateRight: {
+    fontFamily: 'avenir-roman',
     alignSelf: 'flex-end',
     color: colors.textMedium,
     fontSize: fonts.size.tiny,
-    marginHorizontal: 6,
+    marginHorizontal: metrics.medium,
     marginBottom: 3
   }
 });
