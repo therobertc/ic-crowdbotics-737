@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { 
-  StyleSheet, 
-  Text, 
+import {
+  StyleSheet,
+  Text,
   View,
   TouchableOpacity
 } from 'react-native';
@@ -26,15 +26,15 @@ class SignupChatbot extends Component {
       intent_name: '',
       keyboardType: 'default',
       is_encrypt: false
-    }
+    };
 
     this._renderBubble = this._renderBubble.bind(this);
     this._renderInputToolbar = this._renderInputToolbar.bind(this);
     this._send = this._send.bind(this);
-  } 
+  }
 
   componentDidMount() {
-    this._fetchResponse('hi')
+    this._fetchResponse('hi');
   }
 
   _processResponse = (res) => {
@@ -46,7 +46,7 @@ class SignupChatbot extends Component {
         name: this.state.name.trim() || '',
         email: this.state.email.trim().toLowerCase() || '',
         password: this.state.password
-      }
+      };
 
       _signupAPI(user_info);
     }
@@ -60,7 +60,7 @@ class SignupChatbot extends Component {
         name: 'bot'
       },
       data: payload.data
-    }
+    };
     this.setState((previousState) => {
       return {
         messages: GiftedChat.append(previousState.messages, message),
@@ -77,31 +77,31 @@ class SignupChatbot extends Component {
     if (intentName == 'signupintent') {
       this.setState({
         name: msg
-      })
+      });
     } else if (intentName.includes('signupname')) {
       this.setState({
         email: msg
-      })
+      });
       msg = 'Signup Email is ' + msg;
     } else if (intentName.includes('signupemail')) {
       this.setState({
         password: msg
-      })
+      });
       msg = 'Signup Password is ' + msg;
     }
-    
-    return msg
+
+    return msg;
   }
 
   _fetchResponse = (msg) => {
-    msg = this._storeInfo(msg)
+    msg = this._storeInfo(msg);
 
     fetchResponseFromDialogflow(msg)
     .then((res) => {
-      this._processResponse(res)
+      this._processResponse(res);
     }).catch((err) => {
-      console.log(err)
-    })
+      console.log(err);
+    });
   }
 
   _handleText = (event) => {
@@ -109,7 +109,7 @@ class SignupChatbot extends Component {
     this.setState({
       user_msg: text,
       textinput_height: contentSize.height > 100 ? 100 : contentSize.height
-    })
+    });
   }
 
   _send = (msg = []) => {
@@ -120,15 +120,15 @@ class SignupChatbot extends Component {
 
     if (msg[0].text.trim() == '' || msg[0].text == undefined) {
       _showAlert('You can\'t put the empty string as answer');
-      return
+      return;
     }
 
     if (this.state.intent_name.toLowerCase().includes('signupname') && _validateEmail(msg[0].text) == false) {
       _showAlert('Please enter the valid email address');
-      return
+      return;
     }
 
-    if(!this.state.intent_name.toLowerCase().includes('signupemail')) {
+    if (!this.state.intent_name.toLowerCase().includes('signupemail')) {
       this.setState((previousState) => {
         return {
           messages: GiftedChat.append(previousState.messages, msg)
@@ -136,7 +136,7 @@ class SignupChatbot extends Component {
       });
     }
 
-    this._fetchResponse(msg[0].text)
+    this._fetchResponse(msg[0].text);
   }
 
   send = (msg) => {
@@ -147,8 +147,8 @@ class SignupChatbot extends Component {
       user: {
         _id: 1
       }
-    }
-    var messages = [];
+    };
+    let messages = [];
     messages.push(message);
     this._send(messages);
   }
@@ -156,7 +156,7 @@ class SignupChatbot extends Component {
   _renderBubble = (props) => {
     const { currentMessage } = props;
     if (currentMessage.user._id != 2)
-      return <Bubble {...props}/>
+      {return <Bubble {...props}/>;}
     return (
       <View>
         <View style={styles.messageWrapper}>
@@ -172,19 +172,19 @@ class SignupChatbot extends Component {
                   <TouchableOpacity key={index} style={styles.buttonContainer} onPress={() => this.send(buttonText)}>
                     <Text>{buttonText}</Text>
                   </TouchableOpacity>
-                )
+                );
               })
             }
           </View>
         }
       </View>
-    )
+    );
   }
 
   _renderInputToolbar = (props) => {
     return (
       <InputToolbar {...props} containerStyle={{borderTopWidth: 0}} primaryStyle={styles.footContainer}/>
-    )
+    );
   }
 
   _renderSend = (props) => {
@@ -196,7 +196,7 @@ class SignupChatbot extends Component {
           size={26}
         />
       </Send>
-    )
+    );
   }
 
   render(){
