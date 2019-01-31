@@ -4,9 +4,10 @@ import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 import { colors, fonts, icons, metrics } from '../../theme/index.js';
 import { Ionicons } from '@expo/vector-icons';
 import Chat from '../chat/Chat.js';
+import Feed from '../feed/Feed.js';
 
 const navigationConfig = {
-  initialRoute: 'About',
+  initialRoute: 'Feed',
   showIcon: true,
   tabBarOptions: {
     inactiveTintColor: colors.tabIcon,
@@ -32,10 +33,10 @@ const navigationConfig = {
 const Tabs = createBottomTabNavigator({
   // TODO
   Feed: {
-    screen: Chat,
+    screen: Feed,
     navigationOptions: {
       title: 'Feed',
-      // tabBarLabel: 'Feed',
+      tabBarLabel: 'Feed',
       tabBarIcon: ({ inactiveTintColor, activeTintColor }) =>
         <Image source={icons.feed} style={{ width: 22, height: 19 }}/>
     }

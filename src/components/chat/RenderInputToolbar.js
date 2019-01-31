@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     alignItems: 'center',
     margin: metrics.large,
-    shadowOffset: { width: 0, height: 8 },
-    shadowColor: colors.greyMedium,
+    shadowOffset: { width: 0, height: 5 },
+    shadowColor: '#E5E5E5',
     shadowOpacity: 1,
     backgroundColor : colors.white
   },
