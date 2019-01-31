@@ -2,80 +2,51 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { increaseValue } from './ChatContainer';
+import { saveMessageAction, saveImageAction } from './ChatContainer';
 import { metrics, colors, fonts } from '../../theme/index.js';
 import * as firebase from 'firebase';
 import { GiftedChat } from 'react-native-gifted-chat';
+import RenderBubble from './Bubble.js';
+import moment from 'moment-timezone';
 
 
 class Chat extends Component {
 
-  state = {
-    messages: [],
+  // Send new message and store to redux
+  sendMessage = (messages) => {
+    const newMessage = {
+      ...messages[0],
+      dateCreated: moment().format(),
+      createdAt: null,
+    };
+    this.props.saveMessageAction(newMessage);
   }
 
-  componentWillMount() {
-    this.setState({
-      messages: [
-        {
-          _id: 1,
-          text: 'We are here to help you... Feel free to ask for any questions or queries!',
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'React Native',
-            avatar: 'https://placeimg.com/140/140/any',
-          },
-        },
-        {
-          _id: 2,
-          text: 'Welcome to Emma Ai',
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'React Native',
-            avatar: 'https://placeimg.com/140/140/any',
-          },
-        },
-        {
-          _id: 3,
-          text: 'Hello John',
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'React Native',
-            avatar: 'https://placeimg.com/140/140/any',
-          },
-        },
-      ],
-    });
-  }
-
-  onSend(messages = []) {
-    this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }));
-  }
+  renderBubble = props => <RenderBubble {...props}/>
 
   render() {
     return (
       <GiftedChat
-        messages={this.state.messages}
-        onSend={messages => this.onSend(messages)}
+        messages={this.props.messages}
+        onSend={messages => this.sendMessage(messages)}
+        renderAvatar={null}
+        showUserAvatar={false}
         user={{
           _id: 1,
         }}
+        renderBubble={this.renderBubble}
       />
     );
   }
 }
 
 const stateToProps = state => ({
-  value: state.homeReducer.value,
+  messages: state.chatReducer.messages,
 });
 
 const dispatchToProps = dispatch => ({
-  increaseValue: bindActionCreators(increaseValue, dispatch),
+  saveMessageAction: bindActionCreators(saveMessageAction, dispatch),
+  saveImageAction: bindActionCreators(saveImageAction, dispatch),
 });
 
 export default connect(stateToProps, dispatchToProps)(Chat);
