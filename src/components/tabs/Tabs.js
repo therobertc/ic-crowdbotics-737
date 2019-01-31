@@ -3,8 +3,6 @@ import { Image } from 'react-native';
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 import { colors, fonts, icons, metrics } from '../../theme/index.js';
 import { Ionicons } from '@expo/vector-icons';
-import Home from '../home/Home.js';
-import About from '../about/About.js';
 import Chat from '../chat/Chat.js';
 
 const navigationConfig = {
@@ -34,7 +32,7 @@ const navigationConfig = {
 const Tabs = createBottomTabNavigator({
   // TODO
   Feed: {
-    screen: Home,
+    screen: Chat,
     navigationOptions: {
       title: 'Feed',
       // tabBarLabel: 'Feed',
@@ -44,7 +42,7 @@ const Tabs = createBottomTabNavigator({
   },
   // TODO
   Portfolio: {
-    screen: About,
+    screen: Chat,
     navigationOptions: {
       title: 'Portfolio',
       tabBarLabel: 'Portfolio',

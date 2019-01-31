@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity, TextInput, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { saveCurrentUserAction,  } from '../profile/ProfileContainer.js';
-import { saveEmailAction, savePhoneNumberAction  } from '../signup/SignupContainer.js';
-import { updateLoadingAction } from '../welcome/WelcomeContainer.js';
+import { saveEmailAction, savePhoneNumberAction  } from '../../reducer/signup.js';
 import { metrics, colors, fonts } from '../../theme/index.js';
 import { Ionicons } from '@expo/vector-icons';
-import PropTypes from 'prop-types';
 import * as firebase from 'firebase';
 
 
@@ -34,7 +31,7 @@ class Signup extends Component {
   acceptTerms = (bool) => this.setState({ termsAccepted: bool })
 
   render(){
-    const { navigation, currentUser } = this.props;
+    const { navigation } = this.props;
 
     return (
       <View style={styles.container}>
@@ -112,16 +109,13 @@ class Signup extends Component {
 }
 
 const stateToProps = state => ({
-  currentUser: state.profileReducer.currentUser,
   isLoading: state.welcomeReducer.isLoading,
   email: state.signupReducer.email,
 });
 
 const dispatchToProps = dispatch => ({
-  saveCurrentUserAction: bindActionCreators(saveCurrentUserAction, dispatch),
   saveEmailAction: bindActionCreators(saveEmailAction, dispatch),
   savePhoneNumberAction: bindActionCreators(savePhoneNumberAction, dispatch),
-  updateLoadingAction: bindActionCreators(updateLoadingAction, dispatch),
 });
 
 export default connect(stateToProps, dispatchToProps)(Signup);
