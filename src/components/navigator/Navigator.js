@@ -9,6 +9,8 @@ import Login from '../login/Login.js';
 import Signup from '../signup/Signup.js';
 import SignupChatbot from '../signup/Chatbot.js';
 import LoginChatbot from '../login/Chatbot.js';
+import Tabs from '../tabs/Tabs.js';
+
 
 const navigationConfig = {
   initialRouteName: 'Introduce',
@@ -60,6 +62,12 @@ const AppNavigator = createStackNavigator({
   },
   LoginBot: {
     screen: LoginChatbot,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Tabs: {
+    screen: Tabs,
     navigationOptions: {
       header: null
     }

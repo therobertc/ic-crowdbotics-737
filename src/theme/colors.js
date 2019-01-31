@@ -7,16 +7,18 @@ const colors = {
   error: '#ff0000',
   // Text
   textLight: '#3E4A59',
-  textMedium: '#425256',
-  textDark: '#4C495B',
+  textMedium: 'rgb(92, 101, 112)',
+  textDark: 'rgb(64, 74, 88)',
   // Grey shades
   greyLight: '#F7F7F7',
-  greyMedium: '#ECF1F8',
+  greyMedium: 'rgb(247, 247, 247)',
   greyDark: '#3E4A59',
   // black/white
   black: '#000000',
   white: '#ffffff',
 
+  tabBackground: 'rgb(255, 255, 255)',
+  tabIcon: 'rgb(219, 222, 223)',
   activeDot: '#52CBC2',
   dot: '#ECF1F8',
   send: '#90DBD7'
