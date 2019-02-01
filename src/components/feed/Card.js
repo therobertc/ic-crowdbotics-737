@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import { saveFeedAction } from './FeedContainer';
@@ -46,6 +46,7 @@ export default connect(stateToProps, dispatchToProps)(Card);
 const styles = StyleSheet.create({
   container: {
     height: 150,
+    width: Dimensions.get('window').width - (metrics.medium * 4),
     flexDirection: 'row',
     margin: metrics.small,
     borderColor: 'rgba(217, 226, 233, 0.5)',

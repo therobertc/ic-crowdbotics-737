@@ -11,7 +11,7 @@ import Card from './Card.js';
 class Feed extends Component {
 
   state = {
-    text: '',
+    text: ''
   }
 
   _renderFeed = (item, index) => <Card key={item.id} item={item} />

@@ -9,6 +9,7 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import RenderBubble from './RenderBubble.js';
 import RenderInputToolbar from './RenderInputToolbar.js';
 import RenderSend from './RenderSend.js';
+import RenderCustomView from './RenderCustomView.js';
 import moment from 'moment-timezone';
 
 
@@ -29,6 +30,8 @@ class Chat extends Component {
   _renderInputToolbar = props => <RenderInputToolbar {...props}/>
 
   _renderSend = props => <RenderSend {...props}/>
+
+  _renderCustomView = props => <RenderCustomView {...props} />
 
 
 
@@ -54,6 +57,7 @@ class Chat extends Component {
           renderBubble={this._renderBubble}
           renderInputToolbar={this._renderInputToolbar}
           renderSend={this._renderSend}
+          renderCustomView={this._renderCustomView}
         />
       </View>
     );
