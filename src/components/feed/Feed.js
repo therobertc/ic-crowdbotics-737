@@ -11,7 +11,7 @@ import Card from './Card.js';
 class Feed extends Component {
 
   state = {
-    text: '',
+    text: ''
   }
 
   _renderFeed = (item, index) => <Card key={item.id} item={item} />
@@ -28,7 +28,7 @@ class Feed extends Component {
           />
           <Icon.Ionicons name="md-search" color={colors.primary} size={26} />
         </View>
-        <ScrollView style={{ flex: 1, marginTop: 15 }}>
+        <ScrollView style={{ flex: 1, marginTop: 15 }} showsVerticalScrollIndicator={false}>
           {
             this.props.feedMessages.map(this._renderFeed)
           }

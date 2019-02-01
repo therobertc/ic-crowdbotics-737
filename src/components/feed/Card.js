@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import { saveFeedAction } from './FeedContainer';
@@ -9,18 +9,14 @@ import { metrics, colors, fonts } from '../../theme/index.js';
 
 class Card extends Component {
 
-  state = {
-    text: '',
-  }
-
   render() {
     const { item } = this.props;
     return (
       <View style={styles.container} key={item.id}>
         <Image source={{ uri: item.image }} style={styles.image}/>
         <View style={styles.rightContainer}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.description}>{item.text}</Text>
+          <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+          <Text style={styles.description} numberOfLines={4}>{item.text}</Text>
           <View style={styles.buttonContainer}>
             <View style={styles.button}>
               <Icon.Ionicons name="md-heart-empty" size={15} color={colors.primary} />
@@ -50,6 +46,7 @@ export default connect(stateToProps, dispatchToProps)(Card);
 const styles = StyleSheet.create({
   container: {
     height: 150,
+    width: Dimensions.get('window').width - (metrics.medium * 4),
     flexDirection: 'row',
     margin: metrics.small,
     borderColor: 'rgba(217, 226, 233, 0.5)',
@@ -62,24 +59,29 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '40%',
-    height: '100%'
+    height: 150
   },
   rightContainer: {
-    flex: 2.8,
-    paddingTop: metrics.medium,
+    height: 150,
+    width: '60%',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignSelf: 'baseline'
   },
   title: {
+    marginTop: metrics.medium,
+    marginHorizontal: metrics.medium,
     fontSize: fonts.size.small,
     fontFamily: 'avenir-black',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   description: {
+    margin: metrics.small,
+    marginHorizontal: metrics.medium,
     fontSize: fonts.size.small,
     fontFamily: 'avenir-roman',
     textAlign: 'center',
-    color: colors.textMedium
+    color: colors.textMedium,
   },
   buttonContainer: {
     flexDirection: 'row',

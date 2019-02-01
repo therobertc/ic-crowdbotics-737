@@ -28,11 +28,13 @@ const RenderBubble = props => {
         }}
         wrapperStyle={{
           left: {
+            // width: 300,
             backgroundColor: colors.greyMedium,
             margin: metrics.medium,
             borderRadius: 5,
           },
           right: {
+            // width: 300,
             backgroundColor: colors.secondary,
             margin: metrics.medium,
             borderRadius: 5,
