@@ -16,7 +16,7 @@ const initialState = {
     {
       id: 2,
       title: 'Apple is no longer the biggest company',
-      text: 'We are here to help you... Feel free to ask for any questions or queries!',
+      text: 'We are here to help you... Feel free to ask for any questions or queries! We are here to help you... Feel free to ask for any questions or queries! Feel free to ask for any questions or queries!',
       image: 'https://placeimg.com/140/140/any',
       dateCreated: new Date(),
       likes: 5,

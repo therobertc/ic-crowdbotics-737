@@ -9,18 +9,14 @@ import { metrics, colors, fonts } from '../../theme/index.js';
 
 class Card extends Component {
 
-  state = {
-    text: '',
-  }
-
   render() {
     const { item } = this.props;
     return (
       <View style={styles.container} key={item.id}>
         <Image source={{ uri: item.image }} style={styles.image}/>
         <View style={styles.rightContainer}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.description}>{item.text}</Text>
+          <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+          <Text style={styles.description} numberOfLines={4}>{item.text}</Text>
           <View style={styles.buttonContainer}>
             <View style={styles.button}>
               <Icon.Ionicons name="md-heart-empty" size={15} color={colors.primary} />
@@ -62,24 +58,29 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '40%',
-    height: '100%'
+    height: 150
   },
   rightContainer: {
-    flex: 2.8,
-    paddingTop: metrics.medium,
+    height: 150,
+    width: '60%',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignSelf: 'baseline'
   },
   title: {
+    marginTop: metrics.medium,
+    marginHorizontal: metrics.medium,
     fontSize: fonts.size.small,
     fontFamily: 'avenir-black',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   description: {
+    margin: metrics.small,
+    marginHorizontal: metrics.medium,
     fontSize: fonts.size.small,
     fontFamily: 'avenir-roman',
     textAlign: 'center',
-    color: colors.textMedium
+    color: colors.textMedium,
   },
   buttonContainer: {
     flexDirection: 'row',
