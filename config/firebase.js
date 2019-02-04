@@ -1,6 +1,5 @@
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import { _showAlert } from './util';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyDTEm1-9dt5hBFBhg7-_2I-ZFNrqiVWxqU',
@@ -20,34 +19,63 @@ _saveUserInfo = (uid, userInfo) => {
 }
 
 export const _signupAPI = (userInfo) => {
-  firebase.auth().createUserWithEmailAndPassword(userInfo.email, userInfo.password)
-  .then((res) => {
+  return firebase.auth().createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+  .then(() => {
       var user = firebase.auth().currentUser;
       this._saveUserInfo(user.uid, userInfo);
       user.sendEmailVerification();
-      _showAlert('You account was created successfully.');
+      return 'You account was created successfully.';
   })
-  .catch((err) => _showAlert(err.message))
+  .catch((err) => {
+    return err.message
+  });
 }
 
 export const _loginAPI = (email, password) => {
-  firebase.auth().signInWithEmailAndPassword(email, password)
-  .then((res) => {
+  return firebase.auth().signInWithEmailAndPassword(email, password)
+  .then(() => {
     var user = firebase.auth().currentUser;
     if (!user.emailVerified) {
-      _showAlert('You need to verify your email address first to login');
+      return 'You need to verify your email address first to login. Please enter password again after verify to go.';
     } else {
-      _showAlert('You logged in successfully.')
+      return 'You logged in successfully.';
     }
   })
-  .catch(_showAlert(err.message))
+  .catch((err) => {
+    return err.message;
+  })
+}
+
+export const _updateUserInfoAPI = (userInfo) => {
+  const user = firebase.auth().currentUser;
+  return firebase.firestore().collection('user_info')
+  .doc(user.uid).set(userInfo, {merge: true})
+  .then(() => {
+    return 'Updated the userinfo successfully.'
+  })
+  .catch((err) => {
+    return err.message;
+  })
 }
 
 export const _sendResetPasswordEmail = (email) => {
-  firebase.auth().sendPasswordResetEmail(email)
-  .then((res) => {
-    _showAlert('Reset password email was sent to ' + email + ' successfully.')
+  return firebase.auth().sendPasswordResetEmail(email)
+  .then(() => {
+    return 'Reset password email was sent to ' + email + ' successfully.';
   }).catch((err) => {
-    _showAlert(err.message)
+    return err.message;
+  })
+}
+
+export const _saveInvestment = (info) => {
+  const user = firebase.auth().currentUser;
+  info.user_id = user.uid;
+  console.log(info);
+
+  return firebase.firestore().collection('investments')
+  .add(info).then(() => {
+    return 'Saved your investment info successfully.'
+  }).catch((err) => {
+    return err.message;
   })
 }
