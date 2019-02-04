@@ -11,28 +11,19 @@ import { bindActionCreators } from 'redux';
 import { GiftedChat, Time, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
 
 import { saveEmailAction, savePhoneNumberAction  } from '../../reducer/signup.js';
-import { fetchResponseFromAuthBot } from '../../../config/api.js';
+import { fetchResponseFromEmmaBot } from '../../../config/api.js';
 import { _validateEmail, _showAlert } from '../../../config/util.js';
-import { _signupAPI, _updateUserInfoAPI } from '../../../config/firebase.js';
+import { _signupAPI, _updateUserInfoAPI, _saveInvestment } from '../../../config/firebase.js';
 import { metrics, colors, fonts } from '../../theme/index.js';
 
 
-class SignupChatbot extends Component {
+class EmmaBot extends Component {
   constructor(props) {
     super(props);
     this.state = {
       has_buttons: false,
-      intent_name: '',
       keyboardType: 'default',
-      is_encrypt: false,
-      name: '',
-      email: '',
-      password: '',
-      zipcode: '',
-      status: '',
-      job: '',
-      salary: '',
-      net: ''
+      intent_name: ''
     };
 
     this._renderBubble = this._renderBubble.bind(this);
@@ -63,7 +54,6 @@ class SignupChatbot extends Component {
         messages: GiftedChat.append(previousState.messages, message),
         intent_name: intent_name,
         has_buttons: payload.data.type == 'button',
-        is_encrypt: intent_name.toLowerCase().includes('signupemail')
       };
     });
   }
@@ -72,83 +62,48 @@ class SignupChatbot extends Component {
     const { intent_name } = this.state;
     const intentName = intent_name.toLowerCase();
 
-    if (intentName == 'signupintent') {
+    console.log(intentName, msg);
+
+    if (intentName.includes('emmastart')) {
       this.setState({
-        name: msg
+        experience: msg
       });
-    } else if (intentName.includes('signupname')) {
+    } else if (intentName.includes('emmaexperience')) {
       this.setState({
-        email: msg
+        income: msg
       });
-      msg = 'Signup Email is ' + msg;
-    } else if (intentName.includes('signupemail')) {
+    } else if (intentName.includes('emmaincome')) {
       this.setState({
-        password: msg
-      });
-      msg = 'Signup Password is ' + msg;
-    } else if (intentName.includes('signupfurther')) {
-      this.setState({
-        zipcode: msg
+        amount: msg
       })
-    } else if (intentName.includes('signupzipcode')) {
+    } else if (intentName.includes('emmasave')) {
       this.setState({
-        status: msg
+        reason: msg
+      }, () => {
+        const save_info = {
+          'experience': this.state.experience,
+          'income': this.state.income,
+          'amount': this.state.amount,
+          'reason': msg
+        }
+
+        _saveInvestment(save_info)
+        .then((res) => {
+          console.log(res);
+        }).catch((err) => {
+          _showAlert(err);
+        })
       })
-    } else if (intentName.includes('signupstatus')) {
-      this.setState({
-        job: msg
-      })
-      msg = 'My job is ' + msg;
-    } else if (intentName.includes('signupjob')) {
-      this.setState({
-        salary: msg
-      })
-    } else if (intentName.includes('signupsalary')) {
-      this.setState({
-        net: msg
-      })
+      msg = 'For ' + msg;
     }
 
     return msg;
   }
 
   _fetchResponse = (msg) => {
+    msg = this._storeInfo(msg);
 
-    const intentName = this.state.intent_name.toLowerCase();
-
-    if (intentName.includes('signuppassword')) {
-      const user_info = {
-        name: this.state.name.trim() || '',
-        email: this.state.email.trim().toLowerCase() || '',
-        password: this.state.password
-      }
-
-      _signupAPI(user_info)
-      .then((res) => {
-          console.log(res);
-      }).catch((err) => {
-          _showAlert(err);
-          return;
-      })
-    } else if (intentName.includes('signupsalary')) {
-      const user_info = {
-        'zipcode': this.state.zipcode.trim() || '',
-        'status': this.state.status.trim() || '',
-        'job': this.state.job.trim() || '',
-        'salary': this.state.salary.trim() || '',
-        'net': msg.trim() || ''
-      }
-
-      _updateUserInfoAPI(user_info)
-      .then((res) => {
-          console.log(res);
-      }).catch((err) => {
-          _showAlert(err);
-          return;
-      })
-    }
-
-    fetchResponseFromAuthBot(msg)
+    fetchResponseFromEmmaBot(msg)
     .then((res) => {
       this._processResponse(res);
     }).catch((err) => {
@@ -156,51 +111,14 @@ class SignupChatbot extends Component {
     });
   }
 
-  _handleText = (event) => {
-    const { contentSize, text} = event.nativeEvent;
-    this.setState({
-      user_msg: text,
-      textinput_height: contentSize.height > 100 ? 100 : contentSize.height
-    });
-  }
-
   _send = (msg = []) => {
-    if (msg[0].text.trim() == 'I already have an account') {
-      this.props.navigation.navigate('LoginBot');
-      return;
-    }
+    this.setState((previousState) => {
+      return {
+        messages: GiftedChat.append(previousState.messages, msg)
+      };
+    });
 
-    if (msg[0].text.trim() == 'Skip for now') {
-      this.props.navigation.navigate('LoginBot');
-      return;
-    }
-
-    if (msg[0].text.trim().includes('Yes, log me in')) {
-      this.props.navigation.navigate('LoginBot');
-      return;
-    }
-
-    if (msg[0].text.trim() == '' || msg[0].text == undefined) {
-      _showAlert('You can\'t put the empty string as answer');
-      return;
-    }
-
-    if (this.state.intent_name.toLowerCase().includes('signupname') && _validateEmail(msg[0].text) == false) {
-      _showAlert('Please enter the valid email address');
-      return;
-    }
-
-    if (!this.state.intent_name.toLowerCase().includes('signupemail')) {
-      this.setState((previousState) => {
-        return {
-          messages: GiftedChat.append(previousState.messages, msg)
-        };
-      });
-    }
-
-    const txt = this._storeInfo(msg[0].text);
-
-    this._fetchResponse(txt);
+    this._fetchResponse(msg[0].text);
   }
 
   send = (msg) => {
@@ -236,7 +154,7 @@ class SignupChatbot extends Component {
             marginBottom: 30, 
             marginTop: 10,
             flexWrap: 'wrap',
-            flexDirection: (intentName.includes('welcome') || intentName.includes('signuppassword') || intentName.includes('signupsalary')) ? 'column' : 'row',
+            flexDirection: (intentName.includes('emmaname') || intentName.includes('emmasave')) ? 'column' : 'row',
           }}>
             {
               currentMessage.data.buttons.map((buttonText, index) => {
@@ -311,7 +229,7 @@ const dispatchToProps = dispatch => ({
   savePhoneNumberAction: bindActionCreators(savePhoneNumberAction, dispatch),
 });
 
-export default connect(stateToProps, dispatchToProps)(SignupChatbot);
+export default connect(stateToProps, dispatchToProps)(EmmaBot);
 
 
 const styles = StyleSheet.create({

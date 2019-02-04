@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux';
 import { GiftedChat, Time, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
 
 import { saveEmailAction, savePhoneNumberAction  } from '../../reducer/signup.js';
-import { fetchResponseFromDialogflow } from '../../../config/api.js';
+import { fetchResponseFromAuthBot } from '../../../config/api.js';
 import { _validateEmail, _showAlert } from '../../../config/util.js';
 import { _loginAPI, _sendResetPasswordEmail } from '../../../config/firebase.js';
 import { metrics, colors, fonts } from '../../theme/index.js';
@@ -41,8 +41,18 @@ class LoginChatbot extends Component {
     const intent_name = res.result.metadata.intentName;
 
     if (intent_name.toLowerCase().includes('loginpassword')) {
-      _loginAPI(this.state.email.trim().toLowerCase(), this.state.password);
-      this.props.navigation.navigate('Tabs')
+      _loginAPI(this.state.email.trim().toLowerCase(), this.state.password)
+      .then((res) => {
+        console.log(res);
+        if (res.includes('verify')) {
+          _showAlert(res);
+        } else {
+          this.props.navigation.navigate('Tabs')
+        }
+      }).catch((err) => {
+        _showAlert(err)
+      });
+      
     } else if (intent_name.toLowerCase().includes('forgotpassword')) {
       _sendResetPasswordEmail(this.state.email.trim().toLowerCase())
     }
@@ -62,7 +72,7 @@ class LoginChatbot extends Component {
         messages: GiftedChat.append(previousState.messages, message),
         intent_name: intent_name,
         has_buttons: payload.data.type == 'button',
-        is_encrypt: intent_name.toLowerCase().includes('signupemail')
+        is_encrypt: intent_name.toLowerCase().includes('loginemail')
       };
     });
   }
@@ -88,7 +98,7 @@ class LoginChatbot extends Component {
   _fetchResponse = (msg) => {
     msg = this._storeInfo(msg)
 
-    fetchResponseFromDialogflow(msg)
+    fetchResponseFromAuthBot(msg)
     .then((res) => {
       this._processResponse(res)
     }).catch((err) => {

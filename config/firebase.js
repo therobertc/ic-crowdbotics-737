@@ -36,7 +36,7 @@ export const _loginAPI = (email, password) => {
   .then(() => {
     var user = firebase.auth().currentUser;
     if (!user.emailVerified) {
-      return 'You need to verify your email address first to login';
+      return 'You need to verify your email address first to login. Please enter password again after verify to go.';
     } else {
       return 'You logged in successfully.';
     }
@@ -48,8 +48,8 @@ export const _loginAPI = (email, password) => {
 
 export const _updateUserInfoAPI = (userInfo) => {
   const user = firebase.auth().currentUser;
-  return firebase.firestore().collection('questions')
-  .doc(user.uid).update(userInfo)
+  return firebase.firestore().collection('user_info')
+  .doc(user.uid).set(userInfo, {merge: true})
   .then(() => {
     return 'Updated the userinfo successfully.'
   })
@@ -62,6 +62,19 @@ export const _sendResetPasswordEmail = (email) => {
   return firebase.auth().sendPasswordResetEmail(email)
   .then(() => {
     return 'Reset password email was sent to ' + email + ' successfully.';
+  }).catch((err) => {
+    return err.message;
+  })
+}
+
+export const _saveInvestment = (info) => {
+  const user = firebase.auth().currentUser;
+  info.user_id = user.uid;
+  console.log(info);
+
+  return firebase.firestore().collection('investments')
+  .add(info).then(() => {
+    return 'Saved your investment info successfully.'
   }).catch((err) => {
     return err.message;
   })
