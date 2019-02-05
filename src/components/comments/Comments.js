@@ -1,13 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Dimensions } from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { saveCommentAction } from './CommentsContainer';
 import { metrics, colors, fonts } from '../../theme/index.js';
-import { Bubble } from 'react-native-gifted-chat';
+import { Icon } from 'expo';
 // import * as firebase from 'firebase';
 import moment from 'moment-timezone';
-import Card from '../feed/Card.js';
 
 
 const _renderComments = (item, index) => (
@@ -24,17 +23,40 @@ const _renderComments = (item, index) => (
 );
 
 
-const Comments = (props) => {
-  return (
-    <View style={styles.container}>
-      <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        {
-          props.comments.map(_renderComments)
-        }
-      </ScrollView>
-    </View>
-  );
-};
+class Comments extends Component {
+
+  state = {
+    text: ''
+  }
+
+  render() {
+    const { comments } = this.props;
+    return (
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+          {
+            comments.map(_renderComments)
+          }
+        </ScrollView>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            onChangeText={(text) => this.setState({text})}
+            value={this.state.text}
+            placeholder="Type comment..."
+          />
+          <TouchableOpacity style={styles.buttonContainer}>
+            <Icon.Ionicons
+              name={'md-send'}
+              color={colors.send}
+              size={26}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+}
 
 const stateToProps = state => ({
   comments: state.commentsReducer.comments,
@@ -104,4 +126,35 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.textMedium,
   },
+  // send input
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: Dimensions.get('window').width - (metrics.medium * 4),
+    height: 50,
+    margin: metrics.small,
+    marginVertical: metrics.huge,
+    borderColor: 'rgba(217, 226, 233, 0.5)',
+    borderRadius: 6,
+    borderWidth: 0.5,
+    shadowOffset: { width: 0, height: 5 },
+    shadowColor: '#E5E5E5',
+    shadowOpacity: 1,
+    backgroundColor : colors.white,
+  },
+  input: {
+    flex: 1,
+    padding: metrics.small,
+    fontSize: fonts.size.medium,
+    fontFamily: 'avenir-roman',
+    color: colors.textMedium,
+  },
+  buttonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width: 50
+
+  }
 });
