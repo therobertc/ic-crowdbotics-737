@@ -10,6 +10,7 @@ import Signup from '../signup/Signup.js';
 import SignupChatbot from '../signup/Chatbot.js';
 import LoginChatbot from '../login/Chatbot.js';
 import Tabs from '../tabs/Tabs.js';
+import Comments from '../comments/Comments.js';
 
 
 const navigationConfig = {
@@ -68,6 +69,12 @@ const AppNavigator = createStackNavigator({
   },
   Tabs: {
     screen: Tabs,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Comments: {
+    screen: Comments,
     navigationOptions: {
       header: null
     }
