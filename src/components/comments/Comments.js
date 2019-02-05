@@ -7,6 +7,7 @@ import { metrics, colors, fonts } from '../../theme/index.js';
 import { Icon } from 'expo';
 // import * as firebase from 'firebase';
 import moment from 'moment-timezone';
+import CustomHeader from '../header/Header.js';
 
 
 const _renderComments = (item, index) => (
@@ -33,6 +34,7 @@ class Comments extends Component {
     const { comments } = this.props;
     return (
       <View style={styles.container}>
+        <CustomHeader navigation={this.props.navigation} />
         <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
           {
             comments.map(_renderComments)
@@ -155,6 +157,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 50,
     width: 50
-
   }
 });

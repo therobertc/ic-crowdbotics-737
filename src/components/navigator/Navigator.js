@@ -14,7 +14,7 @@ import Comments from '../comments/Comments.js';
 
 
 const navigationConfig = {
-  initialRouteName: 'Comments',
+  initialRouteName: 'Tabs',
   headerMode: 'float',
   defaultNavigationOptions: ({ navigation }) => ({
     headerLeft: <HeaderLeft navigation={navigation} />,
