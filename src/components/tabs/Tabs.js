@@ -5,9 +5,10 @@ import { colors, fonts, icons, metrics } from '../../theme/index.js';
 import { Ionicons } from '@expo/vector-icons';
 import Chat from '../chat/Chat.js';
 import Feed from '../feed/Feed.js';
+import EmmaBot from '../emma/Chatbot.js';
 
 const navigationConfig = {
-  initialRoute: 'Feed',
+  initialRoute: 'Emma',
   showIcon: true,
   tabBarOptions: {
     inactiveTintColor: colors.tabIcon,
@@ -51,8 +52,8 @@ const Tabs = createBottomTabNavigator({
         <Image source={icons.portfolio} style={{ width: 22, height: 22 }}/>
     }
   },
-  Chat: {
-    screen: Chat,
+  Emma: {
+    screen: EmmaBot,
     navigationOptions: {
       title: 'Chat',
       tabBarLabel: 'Chat',
