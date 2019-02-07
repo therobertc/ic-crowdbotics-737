@@ -11,6 +11,7 @@ import SignupChatbot from '../signup/Chatbot.js';
 import LoginChatbot from '../login/Chatbot.js';
 import Tabs from '../tabs/Tabs.js';
 import Comments from '../comments/Comments.js';
+import Investment from '../investment/Investment.js';
 
 
 const navigationConfig = {
@@ -78,6 +79,9 @@ const AppNavigator = createStackNavigator({
     navigationOptions: {
       header: null
     }
+  },
+  Investment: {
+    screen: Investment
   }
 }, navigationConfig);
 

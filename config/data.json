@@ -1,0 +1,98 @@
+[
+    {
+        "label": "Investment Experience",
+        "values": [
+            {
+                "label": "Fewer than 5 years",
+                "value": 0
+            },
+            {
+                "label": "Between 5 and 10 years",
+                "value": 1
+            },
+            {
+                "label": "Longer than 10 years",
+                "value": 2
+            }
+        ]
+    }, {
+        "label": "Anual Income",
+        "values": [
+            {
+                "label": "Under $25k",
+                "value": 0
+            },
+            {
+                "label": "$25k - $50k",
+                "value": 1
+            },
+            {
+                "label": "$50k - $100k",
+                "value": 2
+            },
+            {
+                "label": "$100k - $250k",
+                "value": 3
+            },
+            {
+                "label": "Over $250k",
+                "value": 4
+            }
+        ]
+    }, {
+        "label": "Net Worth (assets minus debt)",
+        "values": [
+            {
+                "label": "Less than $10k",
+                "value": 0
+            },
+            {
+                "label": "$10k - $50k",
+                "value": 1
+            },
+            {
+                "label": "$50k - $100k",
+                "value": 2
+            },
+            {
+                "label": "$100k - $200k",
+                "value": 3
+            },
+            {
+                "label": "Over $200k",
+                "value": 4
+            }
+        ]
+    }, {
+        "label": "Investing Horizon",
+        "values": [
+            {
+                "label": "Less than 5 years",
+                "value": 0
+            },
+            {
+                "label": "5 to 10 years",
+                "value": 1
+            },
+            {
+                "label": "Over 10 years",
+                "value": 2
+            }
+        ]
+    }, {
+        "label": "Investing Style",
+        "values": [
+            {
+                "title": "Conservative",
+                "description": "I'm comfortable accepting lower returns of more stability."
+            }, {
+                "title": "Moderate",
+                "description": "I'm looking for growth. Moderate gains or losses along the way are fine."
+            }, {
+                "title": "Aggressive",
+                "recommend": true,
+                "description": "I'm comfortable accepting higher risk for higher returns."
+            }
+        ]
+    }
+]

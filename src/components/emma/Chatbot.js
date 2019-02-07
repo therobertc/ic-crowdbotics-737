@@ -122,6 +122,11 @@ class EmmaBot extends Component {
   }
 
   send = (msg) => {
+    if (msg == 'Investment profile') {
+      this.props.navigation.navigate('Investment');
+      return;
+    }
+
     const message = {
       _id: Math.random() * 1000000,
       text: msg,
@@ -154,7 +159,7 @@ class EmmaBot extends Component {
             marginBottom: 30, 
             marginTop: 10,
             flexWrap: 'wrap',
-            flexDirection: (intentName.includes('emmaname') || intentName.includes('emmasave')) ? 'column' : 'row',
+            flexDirection: (intentName.includes('emmaname') || intentName.includes('emmareason')) ? 'column' : 'row',
           }}>
             {
               currentMessage.data.buttons.map((buttonText, index) => {

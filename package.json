@@ -19,6 +19,8 @@
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-gifted-chat": "^0.7.2",
+    "react-native-progress": "^3.5.0",
+    "react-native-simple-radio-button": "^2.7.3",
     "react-navigation": "^3.0.9",
     "react-redux": "^5.0.1",
     "redux": "^3.6.0",
