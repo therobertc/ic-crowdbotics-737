@@ -11,10 +11,11 @@ import SignupChatbot from '../signup/Chatbot.js';
 import LoginChatbot from '../login/Chatbot.js';
 import Tabs from '../tabs/Tabs.js';
 import Comments from '../comments/Comments.js';
+import Likes from '../likes/Likes.js';
 
 
 const navigationConfig = {
-  initialRouteName: 'Introduce',
+  initialRouteName: 'Likes',
   headerMode: 'float',
   defaultNavigationOptions: ({ navigation }) => ({
     headerLeft: <HeaderLeft navigation={navigation} />,
@@ -75,6 +76,12 @@ const AppNavigator = createStackNavigator({
   },
   Comments: {
     screen: Comments,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Likes: {
+    screen: Likes,
     navigationOptions: {
       header: null
     }
