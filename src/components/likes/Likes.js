@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { saveCommentAction } from './CommentsContainer';
+import { saveLikeAction } from './LikesContainer';
 import { metrics, colors, fonts } from '../../theme/index.js';
 import { Icon } from 'expo';
 // import * as firebase from 'firebase';
@@ -10,28 +10,28 @@ import moment from 'moment-timezone';
 import CustomHeader from '../header/Header.js';
 
 
-const _renderComments = (item, index) => (
+const _renderLikes = (item, index) => (
   <View key={item.id} style={styles.itemContainer}>
     <View style={styles.infoContainer}>
       <View style={styles.userInfoContainer}>
         <Image source={{ uri: item.avatar }} style={styles.avatar}/>
         <Text style={styles.name}>{item.name}</Text>
       </View>
-      <Text style={styles.date}>{moment(item.dateCreated).format('ll')}</Text>
+      <Text style={styles.date} />
     </View>
-    <Text style={styles.text}>{item.text}</Text>
   </View>
 );
 
 
-class Comments extends Component {
+class Likes extends Component {
 
   state = {
     text: ''
   }
 
   render() {
-    const { comments } = this.props;
+    const { likes } = this.props;
+
     return (
       <View style={styles.container}>
 
@@ -39,38 +39,23 @@ class Comments extends Component {
 
         <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
           {
-            comments.map(_renderComments)
+            likes.map(_renderLikes)
           }
         </ScrollView>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state.text}
-            placeholder="Type comment..."
-          />
-          <TouchableOpacity style={styles.buttonContainer}>
-            <Icon.Ionicons
-              name={'md-send'}
-              color={colors.send}
-              size={26}
-            />
-          </TouchableOpacity>
-        </View>
       </View>
     );
   }
 }
 
 const stateToProps = state => ({
-  comments: state.commentsReducer.comments,
+  likes: state.likesReducer.likes,
 });
 
 const dispatchToProps = dispatch => ({
-  saveCommentAction: bindActionCreators(saveCommentAction, dispatch),
+  saveLikeAction: bindActionCreators(saveLikeAction, dispatch),
 });
 
-export default connect(stateToProps, dispatchToProps)(Comments);
+export default connect(stateToProps, dispatchToProps)(Likes);
 
 const styles = StyleSheet.create({
   container: {
@@ -114,7 +99,7 @@ const styles = StyleSheet.create({
     fontSize: fonts.size.medium,
     fontFamily: 'avenir-roman',
     textAlign: 'center',
-    color: colors.primary,
+    color: colors.textMedium,
   },
   date: {
     textAlign: 'right',
@@ -122,42 +107,5 @@ const styles = StyleSheet.create({
     fontSize: fonts.size.small,
     fontFamily: 'avenir-roman',
     color: colors.textMedium,
-  },
-  text: {
-    margin: metrics.medium,
-    fontSize: fonts.size.medium,
-    fontFamily: 'avenir-roman',
-    textAlign: 'center',
-    color: colors.textMedium,
-  },
-  // send input
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: Dimensions.get('window').width - (metrics.medium * 4),
-    height: 50,
-    margin: metrics.small,
-    marginVertical: metrics.huge,
-    borderColor: 'rgba(217, 226, 233, 0.5)',
-    borderRadius: 6,
-    borderWidth: 0.5,
-    shadowOffset: { width: 0, height: 5 },
-    shadowColor: '#E5E5E5',
-    shadowOpacity: 1,
-    backgroundColor : colors.white,
-  },
-  input: {
-    flex: 1,
-    padding: metrics.small,
-    fontSize: fonts.size.medium,
-    fontFamily: 'avenir-roman',
-    color: colors.textMedium,
-  },
-  buttonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 50,
-    width: 50
   }
 });

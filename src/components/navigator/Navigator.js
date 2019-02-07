@@ -12,10 +12,13 @@ import LoginChatbot from '../login/Chatbot.js';
 import Tabs from '../tabs/Tabs.js';
 import Comments from '../comments/Comments.js';
 import Investment from '../investment/Investment.js';
+import Tradeit from '../tradeit/Tradeit.js';
+import Likes from '../likes/Likes.js';
+import Plaid from '../plaid/Plaid.js';
 
 
 const navigationConfig = {
-  initialRouteName: 'Introduce',
+  initialRouteName: 'Tradeit',
   headerMode: 'float',
   defaultNavigationOptions: ({ navigation }) => ({
     headerLeft: <HeaderLeft navigation={navigation} />,
@@ -80,8 +83,23 @@ const AppNavigator = createStackNavigator({
       header: null
     }
   },
-  Investment: {
-    screen: Investment
+  Tradeit: {
+    screen: Tradeit,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Likes: {
+    screen: Likes,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Plaid: {
+    screen: Plaid,
+    navigationOptions: {
+      header: null
+    }
   }
 }, navigationConfig);
 
