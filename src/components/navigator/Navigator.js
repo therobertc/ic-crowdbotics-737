@@ -11,10 +11,11 @@ import SignupChatbot from '../signup/Chatbot.js';
 import LoginChatbot from '../login/Chatbot.js';
 import Tabs from '../tabs/Tabs.js';
 import Comments from '../comments/Comments.js';
+import Tradeit from '../tradeit/Tradeit.js';
 
 
 const navigationConfig = {
-  initialRouteName: 'Introduce',
+  initialRouteName: 'Tradeit',
   headerMode: 'float',
   defaultNavigationOptions: ({ navigation }) => ({
     headerLeft: <HeaderLeft navigation={navigation} />,
@@ -78,7 +79,14 @@ const AppNavigator = createStackNavigator({
     navigationOptions: {
       header: null
     }
-  }
+  },
+  Tradeit: {
+    screen: Tradeit,
+    navigationOptions: {
+      header: null
+    }
+  },
+
 }, navigationConfig);
 
 export default createAppContainer(AppNavigator);
