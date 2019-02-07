@@ -11,7 +11,7 @@ const initialState = {
       image: 'https://placeimg.com/140/140/any',
       dateCreated: new Date(),
       likes: 3,
-      shares: 1
+      shares: 1,
     },
     {
       id: 2,

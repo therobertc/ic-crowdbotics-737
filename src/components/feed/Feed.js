@@ -14,7 +14,7 @@ class Feed extends Component {
     text: ''
   }
 
-  _renderFeed = (item, index) => <Card key={item.id} item={item} />
+  _renderFeed = (item, index) => <Card navigation={this.props.navigation} key={item.id} item={item} />
 
   render() {
     return (

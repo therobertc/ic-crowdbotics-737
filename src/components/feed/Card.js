@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import { saveFeedAction } from './FeedContainer';
@@ -18,14 +18,14 @@ class Card extends Component {
           <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
           <Text style={styles.description} numberOfLines={4}>{item.text}</Text>
           <View style={styles.buttonContainer}>
-            <View style={styles.button}>
+            <TouchableOpacity style={styles.button}>
               <Icon.Ionicons name="md-heart-empty" size={15} color={colors.primary} />
               <Text style={styles.number}>{item.likes}</Text>
-            </View>
-            <View style={styles.button}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Comments')}>
               <Icon.Ionicons name="md-share" size={15} color={colors.primary} />
               <Text style={styles.number}>{item.shares}</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
