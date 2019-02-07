@@ -18,7 +18,7 @@ import Plaid from '../plaid/Plaid.js';
 
 
 const navigationConfig = {
-  initialRouteName: 'Tradeit',
+  initialRouteName: 'Introduce',
   headerMode: 'float',
   defaultNavigationOptions: ({ navigation }) => ({
     headerLeft: <HeaderLeft navigation={navigation} />,
@@ -100,6 +100,9 @@ const AppNavigator = createStackNavigator({
     navigationOptions: {
       header: null
     }
+  },
+  Investment: {
+    screen: Investment
   }
 }, navigationConfig);
 
