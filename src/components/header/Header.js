@@ -2,10 +2,8 @@ import React from 'react';
 import { StyleSheet, Image, Text, TouchableOpacity, Platform, View, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import { saveProfileUserAction } from '../profile/ProfileContainer.js';
 // import * as firebase from 'firebase';
 import moment from 'moment';
-// import { LinearGradient } from 'expo';
 import { metrics, colors, fonts, images } from '../../theme/index.js';
 import Icon from '@expo/vector-icons';
 
@@ -18,12 +16,13 @@ const CustomHeader = (props) => {
       source={images.header}
     >
       {
-        props.navigation.state.routeName === 'Comments'
+        props.navigation.state.routeName === 'Comments' ||
+        props.navigation.state.routeName === 'Likes'
         ? <TouchableOpacity style={styles.button} onPress={() => props.navigation.goBack()}>
             <Icon.Ionicons name="ios-arrow-round-back" size={50} color={colors.white} />
           </TouchableOpacity>
         :  <TouchableOpacity style={styles.button} onPress={() => false}>
-            <Icon.Ionicons name="md-menu" size={32} color={colors.black} />
+            <Icon.Ionicons name="md-menu" size={32} color={colors.white} />
           </TouchableOpacity>
       }
       <Text style={styles.title}>Comments</Text>

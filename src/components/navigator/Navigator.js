@@ -11,8 +11,8 @@ import SignupChatbot from '../signup/Chatbot.js';
 import LoginChatbot from '../login/Chatbot.js';
 import Tabs from '../tabs/Tabs.js';
 import Comments from '../comments/Comments.js';
+import Likes from '../likes/Likes.js';
 import Plaid from '../plaid/Plaid.js';
-
 
 const navigationConfig = {
   initialRouteName: 'Introduce',
@@ -76,6 +76,13 @@ const AppNavigator = createStackNavigator({
   },
   Comments: {
     screen: Comments,
+    navigationOptions: {
+      header: null
+    }
+  },
+
+  Likes: {
+    screen: Likes,
     navigationOptions: {
       header: null
     }
