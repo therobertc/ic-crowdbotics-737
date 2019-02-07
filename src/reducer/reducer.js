@@ -4,6 +4,7 @@ import feedReducer from '../components/feed/FeedContainer.js';
 import chatReducer from '../components/chat/ChatContainer.js';
 import commentsReducer from '../components/comments/CommentsContainer.js';
 import tradeitReducer from '../components/tradeit/TradeitContainer.js';
+import likesReducer from '../components/likes/LikesContainer.js';
 import signupReducer from './signup.js';
 
 
@@ -13,5 +14,6 @@ export default combineReducers({
   signupReducer,
   feedReducer,
   commentsReducer,
-  tradeitReducer
+  tradeitReducer,
+  likesReducer
 });
