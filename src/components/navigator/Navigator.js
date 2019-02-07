@@ -12,10 +12,10 @@ import LoginChatbot from '../login/Chatbot.js';
 import Tabs from '../tabs/Tabs.js';
 import Comments from '../comments/Comments.js';
 import Likes from '../likes/Likes.js';
-
+import Plaid from '../plaid/Plaid.js';
 
 const navigationConfig = {
-  initialRouteName: 'Likes',
+  initialRouteName: 'Introduce',
   headerMode: 'float',
   defaultNavigationOptions: ({ navigation }) => ({
     headerLeft: <HeaderLeft navigation={navigation} />,
@@ -80,8 +80,15 @@ const AppNavigator = createStackNavigator({
       header: null
     }
   },
+
   Likes: {
     screen: Likes,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Plaid: {
+    screen: Plaid,
     navigationOptions: {
       header: null
     }
